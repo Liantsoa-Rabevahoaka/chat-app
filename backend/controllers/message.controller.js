@@ -19,16 +19,21 @@ export const sendMessage = async (req, res) => {
             })
         }
 
+        //create the message
         const newMessage = new Message({
             senderId,
             receiverId,
             message,
         });
 
-        //put the message in the array
+        //put the message id in the conversation in the array
         if (newMessage){
             conversation.messages.push(newMessage._id);
         }
+
+        //save in the database
+        await conversation.save();
+        await newMessage.save();
 
         //send in the response
         res.status(201).json(newMessage);
