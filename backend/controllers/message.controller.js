@@ -31,9 +31,14 @@ export const sendMessage = async (req, res) => {
             conversation.messages.push(newMessage._id);
         }
 
+        //SOCKET IO FUNCTIONALITY WILL GO HERE
+
         //save in the database
-        await conversation.save();
-        await newMessage.save();
+        // await conversation.save();
+        // await newMessage.save();
+
+        //this will in parallel
+        await Promise.all([conversation.save(), newMessage.save()]);
 
         //send in the response
         res.status(201).json(newMessage);
